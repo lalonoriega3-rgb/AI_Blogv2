@@ -41,7 +41,8 @@ readTime: "X min"
 - Devuelve SOLO el MDX puro (frontmatter + cuerpo)
 - Sin texto introductorio, sin explicaciones, sin markdown de código \`\`\`mdx
 - El artículo debe leerse como escrito por un experto humano en AI
-- PROHIBIDO usar clichés como: "En este artículo", "Sin duda", "En conclusión", "Es importante destacar"`;
+- PROHIBIDO usar clichés como: "En este artículo", "Sin duda", "En conclusión", "Es importante destacar"
+- IMPORTANTE MDX: nunca uses los símbolos < o > fuera de bloques de código. En su lugar escribe "menor que", "mayor que", o usa paréntesis. Ej: "latencia menor a 2ms", "más del 10%"`;
 }
 
 export async function writeArticle(research) {

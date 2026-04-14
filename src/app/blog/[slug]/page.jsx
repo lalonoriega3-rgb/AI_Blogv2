@@ -33,9 +33,14 @@ export default async function PostPage({ params }) {
     .filter((p) => p.slug !== params.slug)
     .slice(0, 4);
 
+  // Escapa "<" seguido de dígito o espacio — MDX los confunde con JSX inválido
+  // Ej: "<2ms", "< 10%", "<3 años" → "&lt;2ms", etc.
+  // No toca etiquetas JSX válidas como <Component> ni bloques de código.
+  const sanitized = post.content.replace(/<(\d|\s)/g, "&lt;$1");
+
   // Compila el MDX a React
   const { content } = await compileMDX({
-    source: post.content,
+    source: sanitized,
     options: { parseFrontmatter: false },
   });
 
