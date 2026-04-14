@@ -65,7 +65,7 @@ export async function getPostBySlug(slug) {
       readTime: data.readTime || "",
       coverImage: data.coverImage || null,
       keyword: data.keyword || "",
-      content, // el cuerpo MDX sin el frontmatter
+      content,
     };
   }
 

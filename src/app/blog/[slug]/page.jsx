@@ -93,7 +93,7 @@ export default async function PostPage({ params }) {
             <div className="sidebar-related">
               <div className="sidebar-related-title">También te puede interesar</div>
               {related.map((r) => (
-                <a key={r.slug} href={`/blog/${r.slug}`} className="related-item" style={{ display: "block" }}>
+                <a key={r.slug} href={`/blog/${r.slug}`} className="related-item">
                   {r.title}
                 </a>
               ))}

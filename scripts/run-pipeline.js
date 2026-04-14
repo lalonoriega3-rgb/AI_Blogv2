@@ -22,24 +22,39 @@ async function runPipeline() {
   }
 
   try {
+    // ── Paso 1: Investigación ──────────────────────────
     console.log("Paso 1/5 — Investigación\n");
     const research = await researchTopic();
 
+    // ── Paso 2: Redacción ──────────────────────────────
     console.log("\nPaso 2/5 — Redacción\n");
     const draft = await writeArticle(research);
 
+    // ── Paso 3: Revisión SEO ───────────────────────────
     console.log("\nPaso 3/5 — Revisión SEO\n");
     const finalMdx = await reviewArticle(draft, research);
 
+    // ── Paso 4: Imagen (opcional) ──────────────────────
     console.log("\nPaso 4/5 — Generación de imagen (Replicate)\n");
-    // Necesitamos el slug antes de publicar para nombrar la imagen
+    // Extrae el slug antes de publicar para nombrar la imagen
     const tempTitle = finalMdx.match(/title:\s*["']?(.+?)["']?\s*\n/)?.[1] || "post";
-    const tempSlug = tempTitle.toLowerCase().normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s-]/g, "")
-      .trim().replace(/\s+/g, "-").substring(0, 80);
+    const tempSlug = tempTitle
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .substring(0, 80);
 
-    const imagePath = await generateCoverImage(research, tempSlug);
+    let imagePath = null;
+    try {
+      imagePath = await generateCoverImage(research, tempSlug);
+    } catch (imgError) {
+      console.warn("⚠️  [Pipeline] imageAgent falló, continuando sin imagen:", imgError.message);
+    }
 
+    // ── Paso 5: Publicación ────────────────────────────
     console.log("\nPaso 5/5 — Publicación\n");
     const result = await publishArticle(finalMdx, imagePath);
 
@@ -55,6 +70,7 @@ async function runPipeline() {
     return result;
   } catch (error) {
     console.error("\n❌ Pipeline falló:", error.message);
+    if (process.env.DEBUG) console.error(error.stack);
     process.exit(1);
   }
 }

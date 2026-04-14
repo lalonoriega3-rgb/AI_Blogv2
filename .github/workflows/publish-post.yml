@@ -1,0 +1,46 @@
+name: Publicar post automático
+
+on:
+  schedule:
+    # Lunes, miércoles y viernes a las 9:00 AM México (UTC-6 → 15:00 UTC)
+    - cron: '0 15 * * 1,3,5'
+  workflow_dispatch:
+    # Permite lanzar manualmente desde GitHub Actions
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # necesario para git push
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Correr pipeline de publicación
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+          BLOG_URL: ${{ secrets.BLOG_URL }}
+        run: node scripts/run-pipeline.js
+
+      - name: Verificar archivos generados
+        run: |
+          echo "Posts generados:"
+          ls -la src/content/posts/ 2>/dev/null || echo "Sin posts todavía"
+          echo "Imágenes generadas:"
+          ls -la public/images/posts/ 2>/dev/null || echo "Sin imágenes todavía"

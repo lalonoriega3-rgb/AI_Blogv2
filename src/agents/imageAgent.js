@@ -7,10 +7,6 @@ import path from "path";
 import https from "https";
 import http from "http";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
-
 /**
  * Construye un prompt visual para nanobanana basado en el tema del artículo.
  * nanobanana es excelente para imágenes editorial/tech con estética limpia.
@@ -19,10 +15,10 @@ function buildImagePrompt(research) {
   const topic = research.topic;
   const keyword = research.keyword_principal;
 
-  return `editorial tech magazine cover illustration for article about "${topic}", 
+  return `editorial tech magazine cover illustration for article about "${topic}",
   ${keyword}, clean minimal design, flat geometric shapes, bold typography composition,
-  deep navy and electric cyan color palette, professional digital art, 
-  no text, no letters, abstract technology concept, high contrast, 
+  deep navy and electric cyan color palette, professional digital art,
+  no text, no letters, abstract technology concept, high contrast,
   modern graphic design aesthetic, 16:9 aspect ratio`;
 }
 
@@ -53,6 +49,7 @@ function downloadImage(url, destPath) {
  * Genera la imagen de portada del post con Replicate + nanobanana
  */
 export async function generateCoverImage(research, slug) {
+  const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
   console.log("🎨 [Imágenes] Generando portada con nanobanana...");
 
   if (!process.env.REPLICATE_API_TOKEN) {
@@ -64,18 +61,17 @@ export async function generateCoverImage(research, slug) {
   console.log(`   Prompt: "${prompt.substring(0, 80)}..."`);
 
   try {
-    // nanobanana en Replicate — modelo de imagen rápido y de alta calidad
+    // FLUX Schnell — rápido (~5s), alta calidad editorial, gratuito en Replicate
     const output = await replicate.run(
-      "nanobanana/nanobanana:latest",
+      "black-forest-labs/flux-schnell",
       {
         input: {
           prompt,
           width: 1280,
           height: 720,
-          num_inference_steps: 28,
-          guidance_scale: 7.5,
-          negative_prompt:
-            "text, letters, watermark, blurry, low quality, distorted, ugly, bad anatomy",
+          num_outputs: 1,
+          output_format: "jpg",
+          output_quality: 90,
         },
       }
     );

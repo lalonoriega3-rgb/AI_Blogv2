@@ -62,39 +62,59 @@ export default async function HomePage() {
         </section>
       )}
 
+      {!featured && (
+        <section style={{ maxWidth: "var(--max)", margin: "0 auto", padding: "8rem var(--gutter)", textAlign: "center" }}>
+          <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--text3)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>
+            Blog en construcción
+          </div>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 400, color: "var(--text)", marginBottom: "1.5rem" }}>
+            <em>Próximamente: artículos sobre AI</em>
+          </h1>
+          <p style={{ color: "var(--text2)", maxWidth: 480, margin: "0 auto" }}>
+            El pipeline automatizado publicará el primer artículo pronto. Configura tus variables de entorno y ejecuta <code style={{ fontFamily: "var(--mono)", background: "var(--bg3)", padding: "2px 6px", color: "var(--accent)" }}>npm run pipeline</code>.
+          </p>
+        </section>
+      )}
+
       {/* ── Posts grid ── */}
-      <section className="posts-section">
-        <div className="section-label">Últimos artículos</div>
-        <div className="posts-grid">
-          {rest.map((post, i) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className={`post-card fade-up fade-up-${Math.min(i + 1, 4)}`}>
-              <div className="post-card-image">
-                {post.coverImage ? (
-                  <img src={post.coverImage} alt={post.title} loading="lazy" />
-                ) : (
-                  <div className="post-card-image-placeholder">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                      <rect width="40" height="40" rx="4" fill="#2a2a2a"/>
-                      <path d="M8 28l8-10 6 7 4-5 6 8H8z" fill="#3a3a3a"/>
-                      <circle cx="27" cy="14" r="4" fill="#3a3a3a"/>
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="post-card-body">
-                {post.tags?.[0] && (
-                  <div className="post-card-tag">{post.tags[0]}</div>
-                )}
-                <h2 className="post-card-title">{post.title}</h2>
-                <div className="post-card-meta">
-                  <span>{post.date}</span>
-                  {post.readTime && <span>{post.readTime}</span>}
+      {rest.length > 0 && (
+        <section className="posts-section">
+          <div className="section-label">Últimos artículos</div>
+          <div className="posts-grid">
+            {rest.map((post, i) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className={`post-card fade-up fade-up-${Math.min(i + 1, 4)}`}
+              >
+                <div className="post-card-image">
+                  {post.coverImage ? (
+                    <img src={post.coverImage} alt={post.title} loading="lazy" />
+                  ) : (
+                    <div className="post-card-image-placeholder">
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="4" fill="#2a2a2a"/>
+                        <path d="M8 28l8-10 6 7 4-5 6 8H8z" fill="#3a3a3a"/>
+                        <circle cx="27" cy="14" r="4" fill="#3a3a3a"/>
+                      </svg>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+                <div className="post-card-body">
+                  {post.tags?.[0] && (
+                    <div className="post-card-tag">{post.tags[0]}</div>
+                  )}
+                  <h2 className="post-card-title">{post.title}</h2>
+                  <div className="post-card-meta">
+                    <span>{post.date}</span>
+                    {post.readTime && <span>{post.readTime}</span>}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Mid-page ad ── */}
       <AdBanner zoneId={process.env.NEXT_PUBLIC_ADSTERRA_MID} />

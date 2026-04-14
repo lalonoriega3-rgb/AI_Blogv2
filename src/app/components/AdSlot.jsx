@@ -6,14 +6,12 @@ import { useEffect, useRef } from "react";
 
 /**
  * Banner horizontal (728x90) — para header y entre contenido
- * Reemplaza TU_ZONE_ID con el ID real de tu zona en Adsterra
  */
 export function AdBanner({ zoneId = "TU_ZONE_ID" }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (!ref.current || !zoneId || zoneId === "TU_ZONE_ID") return;
-    // Adsterra inyecta el script dinámicamente
+    if (!ref.current || !zoneId || zoneId === "TU_ZONE_ID" || zoneId.startsWith("ZONE_ID")) return;
     const script = document.createElement("script");
     script.async = true;
     script.src = `//ads.adsterra.com/js/${zoneId}.js`;
@@ -39,7 +37,7 @@ export function AdSidebar({ zoneId = "TU_SIDEBAR_ZONE_ID" }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (!ref.current || !zoneId || zoneId === "TU_SIDEBAR_ZONE_ID") return;
+    if (!ref.current || !zoneId || zoneId.startsWith("ZONE_ID")) return;
     const script = document.createElement("script");
     script.async = true;
     script.src = `//ads.adsterra.com/js/${zoneId}.js`;
@@ -62,7 +60,7 @@ export function AdNative({ zoneId = "TU_NATIVE_ZONE_ID" }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (!ref.current || !zoneId || zoneId === "TU_NATIVE_ZONE_ID") return;
+    if (!ref.current || !zoneId || zoneId.startsWith("ZONE_ID")) return;
     const script = document.createElement("script");
     script.async = true;
     script.src = `//ads.adsterra.com/js/${zoneId}.js`;

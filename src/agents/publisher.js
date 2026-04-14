@@ -92,6 +92,12 @@ export async function publishArticle(mdx, imagePath = null) {
   const published = publishToGitHub(filePath, imagePath, slug);
 
   console.log(`✅ [Publisher] "${title}"`);
-  return { slug, filePath, published, title, imagePath,
-    url: published ? `${process.env.BLOG_URL}/blog/${slug}` : null };
+  return {
+    slug,
+    filePath,
+    published,
+    title,
+    imagePath,
+    url: published ? `${process.env.BLOG_URL}/blog/${slug}` : null,
+  };
 }
