@@ -80,7 +80,7 @@ export default async function PostPage({ params }) {
           </header>
 
           {/* Ad nativo dentro del artículo */}
-          <AdNative zoneId={process.env.NEXT_PUBLIC_ADSTERRA_NATIVE} />
+          <AdNative zoneKey={process.env.NEXT_PUBLIC_ADSTERRA_NATIVE} />
 
           {/* Cuerpo del artículo */}
           <div className="post-body fade-up fade-up-2">
@@ -91,7 +91,7 @@ export default async function PostPage({ params }) {
         {/* ── Sidebar ── */}
         <aside className="post-sidebar fade-up fade-up-3">
           {/* Ad 300x250 */}
-          <AdSidebar zoneId={process.env.NEXT_PUBLIC_ADSTERRA_SIDEBAR} />
+          <AdSidebar zoneKey={process.env.NEXT_PUBLIC_ADSTERRA_SIDEBAR} />
 
           {/* Posts relacionados */}
           {related.length > 0 && (

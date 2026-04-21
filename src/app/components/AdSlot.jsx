@@ -1,76 +1,125 @@
 // src/app/components/AdSlot.jsx
-// Componentes de Adsterra para diferentes posiciones
+// Componentes de Adsterra — soporta formato atOptions (iframe) y container (native)
 
 "use client";
 import { useEffect, useRef } from "react";
 
 /**
- * Banner horizontal (728x90) — para header y entre contenido
+ * Formato atOptions (iframe) — Banner 728x90 y Sidebar 300x250
+ * Script: highperformanceformat.com
  */
-export function AdBanner({ zoneId = "TU_ZONE_ID" }) {
+function AdOptionsSlot({ zoneKey, width, height, className, style, label = "Publicidad" }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (!ref.current || !zoneId || zoneId === "TU_ZONE_ID" || zoneId.startsWith("ZONE_ID")) return;
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `//ads.adsterra.com/js/${zoneId}.js`;
-    ref.current.appendChild(script);
-  }, [zoneId]);
+    if (!zoneKey || !ref.current) return;
+
+    const atScript = document.createElement("script");
+    atScript.type = "text/javascript";
+    atScript.text = `
+      atOptions = {
+        'key': '${zoneKey}',
+        'format': 'iframe',
+        'height': ${height},
+        'width': ${width},
+        'params': {}
+      };
+    `;
+
+    const invokeScript = document.createElement("script");
+    invokeScript.type = "text/javascript";
+    invokeScript.src = `https://www.highperformanceformat.com/${zoneKey}/invoke.js`;
+
+    ref.current.appendChild(atScript);
+    ref.current.appendChild(invokeScript);
+
+    return () => {
+      if (ref.current) ref.current.innerHTML = "";
+    };
+  }, [zoneKey]);
+
+  if (!zoneKey) return null;
 
   return (
-    <div className="ad-mid">
-      <div className="ad-mid-inner">
-        <div>
-          <div className="ad-label">Publicidad</div>
-          <div ref={ref} style={{ minWidth: 300, minHeight: 60 }} />
-        </div>
-      </div>
+    <div className={className} style={style}>
+      <div className="ad-label" style={{ marginBottom: 8 }}>{label}</div>
+      <div ref={ref} style={{ minWidth: width, minHeight: height }} />
     </div>
   );
 }
 
 /**
- * Ad de sidebar (300x250) — para la columna lateral del post
+ * Formato container (native/in-article)
+ * Script: profitablecpmratenetwork.com
  */
-export function AdSidebar({ zoneId = "TU_SIDEBAR_ZONE_ID" }) {
-  const ref = useRef(null);
+function AdContainerSlot({ zoneKey, className, style, label = "Patrocinado" }) {
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!ref.current || !zoneId || zoneId.startsWith("ZONE_ID")) return;
+    if (!zoneKey || !containerRef.current) return;
+
+    containerRef.current.id = `container-${zoneKey}`;
+
     const script = document.createElement("script");
     script.async = true;
-    script.src = `//ads.adsterra.com/js/${zoneId}.js`;
-    ref.current.appendChild(script);
-  }, [zoneId]);
+    script.setAttribute("data-cfasync", "false");
+    script.src = `https://pl29153153.profitablecpmratenetwork.com/${zoneKey}/invoke.js`;
+    containerRef.current.parentNode.insertBefore(script, containerRef.current);
+
+    return () => {
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+  }, [zoneKey]);
+
+  if (!zoneKey) return null;
 
   return (
-    <div className="sidebar-ad">
-      <div className="ad-label" style={{ marginBottom: 8 }}>Publicidad</div>
-      <div ref={ref} style={{ minWidth: 250, minHeight: 200 }} />
+    <div className={className} style={style}>
+      <div className="ad-label" style={{ marginBottom: 8 }}>{label}</div>
+      <div ref={containerRef} />
     </div>
   );
 }
 
 /**
- * Native/In-article ad — se mezcla con el contenido del post
- * Este formato tiene el mejor RPM en Adsterra
+ * Banner horizontal 728x90 — header / entre contenido
  */
-export function AdNative({ zoneId = "TU_NATIVE_ZONE_ID" }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!ref.current || !zoneId || zoneId.startsWith("ZONE_ID")) return;
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `//ads.adsterra.com/js/${zoneId}.js`;
-    ref.current.appendChild(script);
-  }, [zoneId]);
-
+export function AdBanner({ zoneKey }) {
   return (
-    <div style={{ margin: "2rem 0", padding: "1rem", background: "var(--bg2)", borderRadius: 4, border: "1px solid var(--border)" }}>
-      <div className="ad-label" style={{ marginBottom: 8 }}>Patrocinado</div>
-      <div ref={ref} />
-    </div>
+    <AdOptionsSlot
+      zoneKey={zoneKey}
+      width={728}
+      height={90}
+      className="ad-mid"
+      style={{ margin: "2rem 0" }}
+    />
+  );
+}
+
+/**
+ * Sidebar 300x250 — columna lateral del post
+ */
+export function AdSidebar({ zoneKey }) {
+  return (
+    <AdOptionsSlot
+      zoneKey={zoneKey}
+      width={300}
+      height={250}
+      className="sidebar-ad"
+      style={{ marginBottom: "1.5rem" }}
+    />
+  );
+}
+
+/**
+ * Native / In-article — se mezcla con el contenido del post
+ */
+export function AdNative({ zoneKey }) {
+  return (
+    <AdContainerSlot
+      zoneKey={zoneKey}
+      className="ad-native"
+      style={{ margin: "2rem 0", padding: "1rem", background: "var(--bg2)", borderRadius: 4, border: "1px solid var(--border)" }}
+    />
   );
 }
