@@ -13,7 +13,7 @@ export default async function HomePage() {
     <>
       {/* ── Header ad (728x90) ── */}
       <div className="ad-header">
-        <AdBanner zoneId={process.env.NEXT_PUBLIC_ADSTERRA_HEADER} />
+        <AdBanner zoneKey={process.env.NEXT_PUBLIC_ADSTERRA_HEADER} />
       </div>
 
       <Navbar />
@@ -117,7 +117,7 @@ export default async function HomePage() {
       )}
 
       {/* ── Mid-page ad ── */}
-      <AdBanner zoneId={process.env.NEXT_PUBLIC_ADSTERRA_MID} />
+      <AdBanner zoneKey={process.env.NEXT_PUBLIC_ADSTERRA_MID} />
 
       {/* ── Footer ── */}
       <footer style={{ borderTop: "1px solid var(--border)", padding: "2rem var(--gutter)" }}>
