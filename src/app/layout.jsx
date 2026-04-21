@@ -1,5 +1,6 @@
 // src/app/layout.jsx
 import { Instrument_Serif, Syne, JetBrains_Mono } from "next/font/google";
+import Navbar from "./components/Navbar";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -44,23 +45,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const adsterraSrc = process.env.NEXT_PUBLIC_ADSTERRA_HEADER;
-
   return (
     <html
       lang="es"
       className={`${instrumentSerif.variable} ${syne.variable} ${jetbrainsMono.variable}`}
     >
-      <head>
-        {/* Adsterra — script de inicialización global */}
-        {adsterraSrc && adsterraSrc !== "ZONE_ID_HEADER" && (
-          <script
-            async
-            src={`//ads.adsterra.com/js/${adsterraSrc}.js`}
-          />
-        )}
-      </head>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

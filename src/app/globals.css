@@ -4,15 +4,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #0a0a0a;
-  --bg2:       #111111;
-  --bg3:       #1a1a1a;
-  --border:    #2a2a2a;
-  --border2:   #333333;
-  --text:      #f0ede8;
-  --text2:     #9a9790;
-  --text3:     #5a5855;
-  --accent:    #e8ff47;      /* amarillo eléctrico — firma visual */
+  --bg:        #ffffff;
+  --bg2:       #f7f7f7;
+  --bg3:       #eeeeee;
+  --border:    #e5e5e5;
+  --border2:   #d0d0d0;
+  --text:      #0d0d0d;
+  --text2:     #555555;
+  --text3:     #999999;
+  --accent:    #2563eb;      /* azul — firma visual */
   --accent2:   #ff6b35;      /* naranja para CTAs */
   --serif:     'Instrument Serif', Georgia, serif;
   --display:   'Syne', sans-serif;
@@ -46,7 +46,7 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 10, 10, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 var(--gutter);
@@ -362,8 +362,8 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(232, 255, 71, 0.08);
-  border: 1px solid rgba(232, 255, 71, 0.2);
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
   padding: 3px 8px;
   border-radius: 2px;
 }
@@ -483,7 +483,7 @@ img { max-width: 100%; display: block; }
   border-left: 3px solid var(--accent);
   padding: 0.75rem 1.25rem;
   margin: 1.5rem 0;
-  background: rgba(232, 255, 71, 0.04);
+  background: rgba(37, 99, 235, 0.04);
 }
 
 .post-body blockquote p {

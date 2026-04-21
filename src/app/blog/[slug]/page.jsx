@@ -1,6 +1,5 @@
 // src/app/blog/[slug]/page.jsx
 import { notFound } from "next/navigation";
-import Navbar from "../../components/Navbar";
 import { AdSidebar, AdNative } from "../../components/AdSlot";
 import { getPostBySlug, getAllPosts } from "../../../lib/posts";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -46,8 +45,6 @@ export default async function PostPage({ params }) {
 
   return (
     <>
-      <Navbar />
-
       <div className="post-layout">
         {/* ── Contenido principal ── */}
         <article>

@@ -1,6 +1,5 @@
 // src/app/page.jsx
 import Link from "next/link";
-import Navbar from "./components/Navbar";
 import { AdBanner } from "./components/AdSlot";
 import { getAllPosts } from "../lib/posts";
 
@@ -15,8 +14,6 @@ export default async function HomePage() {
       <div className="ad-header">
         <AdBanner zoneKey={process.env.NEXT_PUBLIC_ADSTERRA_HEADER} />
       </div>
-
-      <Navbar />
 
       {/* ── Hero — featured post ── */}
       {featured && (
